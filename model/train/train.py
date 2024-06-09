@@ -83,7 +83,7 @@ model.compile(optimizer='adam', loss='categorical_crossentropy', metrics=['accur
 
 model.summary()
 
-early_stopping = EarlyStopping(monitor='val_loss', patience=5, restore_best_weights=True)
+early_stopping = EarlyStopping(monitor='val_loss', patience=10, restore_best_weights=True)
 
 try:
     model.optimizer
@@ -91,11 +91,10 @@ except AttributeError:
     model.compile(optimizer='adam', loss='categorical_crossentropy', metrics=['accuracy'])
 
 history = model.fit(
-    x_train, y_train, epochs=50, validation_split=0.1,
-    callbacks=[early_stopping]
+    x_train, y_train, epochs=50, validation_split=0.1
 )
 
-model.save('model/lung_disease_detection_model.h5')
+model.save('../lung_disease_detection_model.h5')
 
 y_pred = model.predict(x_test)
 y_pred_classes = np.argmax(y_pred, axis=1)
