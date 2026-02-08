@@ -8,7 +8,7 @@ This is a Python program for training a Convolutional Neural Network (CNN) model
 
 ### train.py
 <li>The necessary libraries are imported, including numpy, cv2, os, matplotlib.pyplot, random, sklearn.model_selection, keras.models, keras.layers, and keras.preprocessing.image.
-<li>The dataset can be downloaded from here: https://www.kaggle.com/datasets/imdevskp/corona-virus-report
+<li>The dataset can be downloaded from here: https://www.kaggle.com/datasets/muhammadrehan00/chest-xray-dataset
 <li>The paths for the dataset and test images are set.
 <li>The parameters such as image size, number of classes, and batch size are defined.
 <li>The "load_dataset" function is defined to load the images and labels from the dataset directory. It iterates through the class directories, reads the images using OpenCV, resizes them, and appends them to the "images" list. The labels are also collected and converted to unique binary arrays using label binarization.

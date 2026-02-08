@@ -3,9 +3,7 @@ import os
 import numpy as np
 import matplotlib.pyplot as plt
 from sklearn.model_selection import train_test_split
-from keras.src.models import Sequential
-from keras.src.layers import Conv2D, MaxPooling2D, Flatten, Dense
-from keras.src.legacy.preprocessing.image import ImageDataGenerator
+import tensorflow as tf
 from sklearn.preprocessing import LabelBinarizer
 
 train_dir = 'dataset\\train'
@@ -72,23 +70,20 @@ images, labels = preprocess_dataset(images, labels)
 
 train_images, test_images, train_labels, test_labels = train_test_split(images, labels, test_size=0.2, random_state=42)
 
-model = Sequential()
-model.add(Conv2D(32, (3, 3), activation='relu', input_shape=(img_size, img_size, 3)))
-model.add(MaxPooling2D((2, 2)))
-model.add(Conv2D(64, (3, 3), activation='relu'))
-model.add(MaxPooling2D((2, 2)))
-model.add(Conv2D(128, (3, 3), activation='relu'))
-model.add(MaxPooling2D((2, 2)))
-model.add(Flatten())
-model.add(Dense(128, activation='relu'))
-model.add(Dense(num_classes, activation='softmax'))
+model = tf.keras.models.Sequential()
+model.add(tf.keras.layers.Conv2D(32, (3, 3), activation='relu', input_shape=(img_size, img_size, 3)))
+model.add(tf.keras.layers.MaxPooling2D((2, 2)))
+model.add(tf.keras.layers.Conv2D(64, (3, 3), activation='relu'))
+model.add(tf.keras.layers.MaxPooling2D((2, 2)))
+model.add(tf.keras.layers.Conv2D(128, (3, 3), activation='relu'))
+model.add(tf.keras.layers.MaxPooling2D((2, 2)))
+model.add(tf.keras.layers.Flatten())
+model.add(tf.keras.layers.Dense(128, activation='relu'))
+model.add(tf.keras.layers.Dense(num_classes, activation='softmax'))
 
 model.compile(optimizer='adam', loss='categorical_crossentropy', metrics=['accuracy'])
 
-data_generator = ImageDataGenerator(rotation_range=20, width_shift_range=0.1, height_shift_range=0.1, horizontal_flip=True)
-data_generator.fit(train_images)
-
-history = model.fit(data_generator.flow(train_images, train_labels, batch_size=batch_size), steps_per_epoch=len(train_images) // batch_size, epochs=50)
+history = model.fit(train_images, train_labels, batch_size=batch_size, steps_per_epoch=len(train_images) // batch_size, epochs=50)
 
 # Plot accuracy
 plt.plot(history.history['accuracy'])
@@ -112,4 +107,4 @@ print("Test Loss:", loss)
 print("Test Accuracy:", accuracy)
 
 # Save the model
-model.save('covid19_model.h5')
+model.save('lung_model.h5')
